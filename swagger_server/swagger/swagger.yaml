@@ -1,0 +1,148 @@
+openapi: 3.0.3
+info:
+  title: Hello World
+  description: Sample API for trying out Swagger
+  termsOfService: http://localhost/termsOfService
+  contact:
+    email: na010210dv@gmail.com
+  license:
+    name: nsuhara
+    url: http://localhost/license
+  version: 0.0.1
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+- url: http://localhost:8080
+- url: http://localhost:80
+tags:
+- name: hello
+  description: Greeting API
+  externalDocs:
+    description: Find out more about hello
+    url: http://localhost/hello
+- name: xxx
+  description: xxx
+  externalDocs:
+    description: xxx
+    url: http://localhost/xxx
+paths:
+  /hello:
+    get:
+      tags:
+      - hello
+      summary: "Return 'Hello, {your_name}'"
+      description: "Return 'Hello, {your_name}'"
+      operationId: get_hello
+      parameters:
+      - name: your_name
+        in: query
+        description: The name displayed with Hello
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Hello'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Hello'
+        "400":
+          description: Invalid parameters
+          content: {}
+        "404":
+          description: Not found
+          content: {}
+      x-openapi-router-controller: swagger_server.controllers.hello_controller
+  /xxx:
+    get:
+      tags:
+      - xxx
+      summary: xxx
+      description: xxx
+      operationId: get_xxx
+      parameters:
+      - name: xxx
+        in: query
+        description: xxx
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successful operation
+          content: {}
+        "400":
+          description: Invalid parameters
+          content: {}
+        "404":
+          description: Not found
+          content: {}
+      x-openapi-router-controller: swagger_server.controllers.xxx_controller
+    post:
+      tags:
+      - xxx
+      summary: xxx
+      operationId: post_xxx
+      requestBody:
+        description: xxx
+        content:
+          '*/*':
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Xxx'
+        required: true
+      responses:
+        default:
+          description: Successful operation
+          content: {}
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: swagger_server.controllers.xxx_controller
+components:
+  schemas:
+    Hello:
+      type: object
+      properties:
+        result:
+          type: string
+          example: "Hello, {your_name}"
+      example:
+        result: "Hello, {your_name}"
+      xml:
+        name: Hello
+    Xxx:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        xxx:
+          type: string
+      xml:
+        name: Xxx
+  securitySchemes:
+    petstore_auth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: http://petstore.swagger.io/oauth/dialog
+          scopes:
+            write:pets: modify pets in your account
+            read:pets: read your pets
+      x-tokenInfoFunc: swagger_server.controllers.authorization_controller.check_petstore_auth
+      x-scopeValidateFunc: swagger_server.controllers.authorization_controller.validate_scope_petstore_auth
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header
+      x-apikeyInfoFunc: swagger_server.controllers.authorization_controller.check_api_key
+
