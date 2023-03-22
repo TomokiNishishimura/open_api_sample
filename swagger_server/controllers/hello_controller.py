@@ -1,6 +1,5 @@
 import connexion
 import six
-import json
 
 from swagger_server.models.hello import Hello  # noqa: E501
 from swagger_server import util
@@ -16,7 +15,4 @@ def get_hello(your_name):  # noqa: E501
 
     :rtype: Hello
     """
-    # return 'do some magic!'
-    return json.dumps({
-        'result': 'Hello, {}'.format(your_name)
-    })
+    return 'do some magic!'
